@@ -33,14 +33,13 @@ function createResultObject({ status }) {
     result = {
       header: 'Sweet Success!',
       icon: 'success',
-      message:
-        'Your test transaction has been successfully processed. See the Braintree API response and try again.'
+      message: 'Your test transaction has been successfully processed.'
     };
   } else {
     result = {
       header: 'Transaction Failed',
       icon: 'fail',
-      message: `Your test transaction has a status of ${status}. See the Braintree API response and try again.`
+      message: `Your test transaction has a status of ${status}.`
     };
   }
 
@@ -51,10 +50,17 @@ router.get('/', (req, res) => {
   res.redirect('/checkouts/new');
 });
 
+// http://localhost:3000/checkouts/new/?amount=20&uid=5&pid=19
+
 router.get('/checkouts/new', (req, res) => {
+  var _amount = req.query.amount; //either a value or undefined
+  var uid = req.query.uid;
+  var pid = req.query.pid;
+  console.log('data: ', _amount, uid, pid);
   gateway.clientToken.generate({}).then(({ clientToken }) => {
     res.render('checkouts/new', {
       clientToken,
+      _amount,
       messages: req.flash('error')
     });
   });
