@@ -3,14 +3,15 @@ extends ../layout
 block content
   .wrapper: .response.container: .content
     if result && result.message
-      a.pseudoshop(href='/') Guest Guide Book Payment Processor
+      //- a.pseudoshop(href='/') Guest Guide Book Payment Processor
 
       h1=result.header
       section
         p= result.message
+        p Redirecting back to the main site...
     //- else
     //-   section
-    //-     p Test another transaction or see the Braintree API response.
+        p Test another transaction or see the Braintree API response.
 
     //- section
     //-   a.button.primary.back(href="/checkouts/new")
