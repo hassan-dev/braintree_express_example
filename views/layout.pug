@@ -5,14 +5,17 @@ html
     meta(name="viewport" content="width=device-width, initial-scale=1")
     link(rel="stylesheet", href="/stylesheets/app.css")
     link(rel="stylesheet", href="/stylesheets/overrides.css")
+    script(src="/javascript/redirect.js")
   body
     header.main
       .container.wide
         .content.slim
           .set
             .fill
-              a.pseudoshop(href='/') Guest Guide Book Payment Processor
+              a.pseudoshop(href='http://localhost:3001/packages') Guest Guide Book Payment Processor
             
+           
+
       .notice-wrapper
         if messages && messages.length > 0
           .show.notice.error.notice-error
