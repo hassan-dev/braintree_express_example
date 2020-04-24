@@ -33,7 +33,7 @@ function createResultObject({ status }) {
     result = {
       header: 'Sweet Success!',
       icon: 'success',
-      message: 'Your test transaction has been successfully processed.'
+      message: 'Your test transaction has been successfully processed. '
     };
   } else {
     result = {
@@ -66,7 +66,7 @@ router.get('/checkouts/new', (req, res) => {
   });
 });
 
-router.get('/checkouts/:id', (req, res) => {
+router.get('/checkouts/response/:id', (req, res) => {
   let result;
   const transactionId = req.params.id;
 
@@ -91,7 +91,7 @@ router.post('/checkouts', (req, res) => {
 
       return new Promise((resolve, reject) => {
         if (success || transaction) {
-          res.redirect(`checkouts/${transaction.id}`);
+          res.redirect(`checkouts/response/${transaction.id}`);
 
           resolve();
         }
