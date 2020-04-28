@@ -22,6 +22,7 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "braintree": "^2.21.0",
     "connect-flash": "~0.1.1",
@@ -34,7 +35,8 @@
     "morgan": "^1.9.1",
     "morgan-debug": "^2.0.0",
     "pug": "^2.0.4",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "store": "^2.0.12"
   },
   "engines": {
     "node": ">=12"
