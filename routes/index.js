@@ -2,6 +2,8 @@ const { Router } = require('express');
 const { Transaction } = require('braintree');
 const logger = require('debug');
 const gateway = require('../lib/gateway');
+const axios = require('axios');
+var store = require('store');
 
 const router = Router(); // eslint-disable-line new-cap
 const debug = logger('braintree_example:router');
@@ -50,13 +52,16 @@ router.get('/', (req, res) => {
   res.redirect('/checkouts/new');
 });
 
-// http://localhost:3000/checkouts/new/?amount=20&uid=5&pid=19
+// http://localhost:3000/checkouts/new/?amount=20&uid=5&pid=19&token=123
 
 router.get('/checkouts/new', (req, res) => {
   var _amount = req.query.amount; //either a value or undefined
   var uid = req.query.uid;
   var pid = req.query.pid;
-  console.log('data: ', _amount, uid, pid);
+  var token = req.query.token;
+  store.set('token', req.query.token);
+  store.set('pid', req.query.pid);
+  console.log('data: ', _amount, uid, pid, token);
   gateway.clientToken.generate({}).then(({ clientToken }) => {
     res.render('checkouts/new', {
       clientToken,
@@ -76,7 +81,7 @@ router.get('/checkouts/response/:id', (req, res) => {
   });
 });
 
-router.post('/checkouts', (req, res) => {
+router.post('/checkouts', async (req, res) => {
   // In production you should not take amounts directly from clients
   const { amount, payment_method_nonce: paymentMethodNonce } = req.body;
 
@@ -86,8 +91,28 @@ router.post('/checkouts', (req, res) => {
       paymentMethodNonce,
       options: { submitForSettlement: true }
     })
-    .then(result => {
+    .then(async result => {
       const { success, transaction } = result;
+      var token = store.get('token');
+      var payload = {
+        payment_method: 'Paypal',
+        transaction_id: `${transaction.id}`,
+        package_id: `${store.get('pid')}`,
+        expire_at: '2020-02-07 10:17:28'
+      };
+      console.log(payload);
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+
+      await axios.post(
+        'https://phplaravel-238332-1180135.cloudwaysapps.com/api/payment',
+        payload,
+        {
+          headers: {
+            ContentType: 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
       return new Promise((resolve, reject) => {
         if (success || transaction) {
