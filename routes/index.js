@@ -94,11 +94,15 @@ router.post('/checkouts', async (req, res) => {
     .then(async result => {
       const { success, transaction } = result;
       var token = store.get('token');
+    var someDate = new Date();
+someDate.setDate(someDate.getDate() + 15);
+var dateFormated = someDate.toISOString().substr(0,10);
+alert(dateFormated);
       var payload = {
         payment_method: 'Paypal',
         transaction_id: `${transaction.id}`,
         package_id: `${store.get('pid')}`,
-        expire_at: '2020-02-07 10:17:28'
+        expire_at: `${dateFormated} 12:00:00`
       };
       console.log(payload);
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
