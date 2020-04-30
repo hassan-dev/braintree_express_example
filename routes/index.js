@@ -95,9 +95,8 @@ router.post('/checkouts', async (req, res) => {
       const { success, transaction } = result;
       var token = store.get('token');
     var someDate = new Date();
-someDate.setDate(someDate.getDate() + 15);
-var dateFormated = someDate.toISOString().substr(0,10);
-alert(dateFormated);
+    someDate.setDate(someDate.getDate() + 15);
+    var dateFormated = someDate.toISOString().substr(0,10);
       var payload = {
         payment_method: 'Paypal',
         transaction_id: `${transaction.id}`,
